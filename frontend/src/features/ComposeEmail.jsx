@@ -23,56 +23,30 @@ const ComposeEmail = ({ onClose, setOpenSnackbar }) => {
     setBody("");
 
     // First..... generate subject and get template ID
-    const subjectSource = new EventSource(
-      "/api/assistant/subject?message=" + encodeURIComponent(genMsgInput)
+    const assistantSource = new EventSource(
+      "/api/assistant/?message=" + encodeURIComponent(genMsgInput)
     );
 
-    let tempId = null;
-
-    subjectSource.onmessage = (event) => {
+    assistantSource.onmessage = (event) => {
       try {
         const data = JSON.parse(event.data);
 
         if (data.content) {
-          setSubject((prev) => prev + data.content);
-        }
-
-        if (data.promptId) {
-          tempId = data.promptId;
+          if (data.type === "subject") {
+            setSubject((prev) => prev + data.content);
+          }
+          if (data.type === "body") {
+            setBody((prev) => prev + data.content);
+          }
         }
       } catch (err) {
-        console.error("Subject stream error:", err);
-        setError("Error generating subject");
+        setError("Error generating from AI assistant");
       }
     };
 
-    subjectSource.onerror = () => {
-      subjectSource.close();
-
-      if (!tempId) {
-        setLoading(false);
-        return setError("No email ID returned from subject phase");
-      }
-
-      // Then..... stream the body using the returned ID
-      const bodySource = new EventSource("/api/assistant/body?id=" + tempId);
-
-      bodySource.onmessage = (event) => {
-        try {
-          const data = JSON.parse(event.data);
-          if (data.content) {
-            setBody((prev) => prev + data.content);
-          }
-        } catch (err) {
-          console.error("Body stream error:", err);
-          setError("Error generating body");
-        }
-      };
-
-      bodySource.onerror = () => {
-        setLoading(false);
-        bodySource.close();
-      };
+    assistantSource.onerror = () => {
+      assistantSource.close();
+      setLoading(false);
     };
   };
 

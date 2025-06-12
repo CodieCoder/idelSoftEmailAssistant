@@ -4,12 +4,8 @@ const nextConfig = {
   async rewrites() {
     return [
       {
-        source: "/api/assistant/subject",
-        destination: "http://localhost:8000/emails/generate/subject/stream",
-      },
-      {
-        source: "/api/assistant/body",
-        destination: "http://localhost:8000/emails/generate/body/stream",
+        source: "/api/assistant",
+        destination: "http://localhost:8000/emails/generate/stream",
       },
     ];
   },

@@ -46,7 +46,7 @@ const getAssistant = async (message) => {
   }
 };
 
-const generateEmailStream = async function* (prompt, message) {
+const generateEmailSubjectStream = async function* (prompt, message) {
   const stream = await groqClient.chat.completions.create({
     messages: [
       { role: "system", content: prompt },
@@ -84,7 +84,7 @@ const generateEmailBody = async function* (prompt, subject, message) {
 
 const LLMService = {
   getAssistant,
-  generateEmailStream,
+  generateEmailSubjectStream,
   generateEmailBody,
 };
 

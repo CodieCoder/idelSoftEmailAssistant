@@ -1,3 +1,5 @@
+import { ASSISTANT_TYPES } from "../llm/constants.js";
+
 // This function generates the sales assistant prompts for subject and body
 const salesAssistant = () => {
   const subject = `You are a persuasive, concise sales assistant.
@@ -21,7 +23,7 @@ Structure and formatting rules:
 - Use 3 to 5 sentences total.
 - Maintain a friendly, professional, and value-focused tone.
 - Do not repeat or reference the original message.
-- Do not include any labels, quotes, or explanations.
+- Do not include greetings, no subject, or sign-offs. Just the body of the email.
 - Do not wrap the output in quotation marks or markdown.
 - Output only the final body text.
 
@@ -53,15 +55,32 @@ Your task:
 - Reference the user's message as a context of what you are writing about (without repeating it verbatim).
 - Maintain a friendly, respectful, and professional tone.
 - Keep the total word count under 60 words.
-- Do not include greetings or sign-offs.
+- Do not include greetings, no subject, or sign-offs. Just the body of the email.
 - Do not add any explanation or formatting
 - Output only the email body.`;
 
   return { subject, body };
 };
+
+const getAssistantPrompt = (assistantString) => {
+  if (
+    ASSISTANT_TYPES.followUp.toLowerCase() === assistantString?.toLowerCase()
+  ) {
+    return followUp();
+  } else if (
+    ASSISTANT_TYPES.salesAssistant.toLowerCase() ===
+    assistantString?.toLowerCase()
+  ) {
+    return salesAssistant();
+  } else {
+    return null;
+  }
+};
+
 const toolsService = {
   salesAssistant,
   followUp,
+  getAssistantPrompt,
 };
 
 export default toolsService;
