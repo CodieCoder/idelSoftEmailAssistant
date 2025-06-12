@@ -10,6 +10,8 @@ const ComposeEmail = ({ onClose, setOpenSnackbar }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [to, setTo] = useState("");
+  const [cc, setCc] = useState("");
+  const [bcc, setBcc] = useState("");
   const [sendEmailError, setSendEmailError] = useState(null);
 
   const handleStreamGeneratedEmail = async () => {
@@ -77,7 +79,7 @@ const ComposeEmail = ({ onClose, setOpenSnackbar }) => {
   const handleSendEmail = async () => {
     if (!subject?.length || !body?.length || !to?.length) return;
 
-    const email = { subject, body, to };
+    const email = { subject, body, to, cc, bcc };
 
     setLoading(true);
     setError(null);
@@ -123,6 +125,10 @@ const ComposeEmail = ({ onClose, setOpenSnackbar }) => {
         sendEmailError={sendEmailError}
         to={to}
         setTo={setTo}
+        cc={cc}
+        setCc={setCc}
+        bcc={bcc}
+        setBcc={setBcc}
       />
     </>
   );

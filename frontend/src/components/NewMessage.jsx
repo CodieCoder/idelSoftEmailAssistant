@@ -27,6 +27,10 @@ const NewMessage = ({
   sendEmailError,
   to,
   setTo,
+  cc,
+  setCc,
+  bcc,
+  setBcc,
 }) => {
   return (
     <Box
@@ -34,7 +38,7 @@ const NewMessage = ({
         paddingLeft: 2,
         paddingRight: 2,
         width: "35rem",
-        height: "39rem",
+        height: "47rem",
         position: "absolute",
         border: "1px solid #ccc",
         backgroundColor: "white",
@@ -96,6 +100,30 @@ const NewMessage = ({
             fullWidth
             value={to}
             onChange={(e) => setTo(e.target.value)}
+          />
+        </Box>
+        <Box>
+          <TextField
+            label="CC"
+            variant="standard"
+            InputLabelProps={{ shrink: true }}
+            size="small"
+            placeholder="CC"
+            fullWidth
+            value={cc}
+            onChange={(e) => setCc(e.target.value)}
+          />
+        </Box>
+        <Box>
+          <TextField
+            label="BCC"
+            variant="standard"
+            InputLabelProps={{ shrink: true }}
+            size="small"
+            placeholder="BCC"
+            fullWidth
+            value={bcc}
+            onChange={(e) => setBcc(e.target.value)}
           />
         </Box>
         <Box>
